@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8scourse-back
+  labels:
+    app: k8scourse-demo
+    role: backend
+spec:
+  template:
+    metadata:
+      labels:
+        app: k8scourse-demo
+        role: backend
+    spec:
+      containers:
+      - name: api
+        image: buiduckhanh1986/k8scourse-back
+        env:
+        - name: MYSQL_HOST
+          value: k8scourse-db
+        - name: MYSQL_USER
+          value: root
+        - name: MYSQL_PASS
+          value: root
+  selector:
+    matchLabels:
+      role: backend
+  replicas: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8scourse-back
+  labels:
+    role: backend
+spec:
+  selector:
+    role: backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

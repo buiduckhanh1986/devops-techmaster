@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8scourse-front
+  labels:
+    app: k8scourse-demo
+    role: frontend
+spec:
+  template:
+    metadata:
+      labels:
+        app: k8scourse-demo
+        role: frontend
+    spec:
+      containers:
+      - name: server
+        image: buiduckhanh1986/k8scourse-front
+        env:
+        - name: BASE_URL
+          value: http://192.168.49.2/api
+  selector:
+    matchLabels:
+      role: frontend
+  replicas: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8scourse-front
+  labels: 
+    role: frontend
+spec:
+  selector:
+    role: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

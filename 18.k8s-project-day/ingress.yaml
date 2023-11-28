@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main
+  annotations:
+   nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /api(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: k8scourse-back
+              port:
+               number: 80
+        - path: /()(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: k8scourse-front
+              port:
+               number: 80
